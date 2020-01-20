@@ -769,8 +769,12 @@ class Device(object):
         # selftest was run twice within the last hour) but we know for a fact that
         # we just ran a new selftest then just return the latest entry in self.tests
         if selftest_results[0] == 2:
-            selftest_return_value = 0 if 'Aborted' not in self.tests[0].status else 3
-            return (selftest_return_value, str(self.tests[0]) if output == 'str' else self.tests[0])
+            if self.tests != None and self.tests[0] != None:
+                selftest_return_value = 0 if 'Aborted' not in self.tests[0].status else 3
+                return (selftest_return_value, str(self.tests[0]) if output == 'str' else self.tests[0])
+            else:
+                selftest_return_value = 4
+                return (selftest_return_value, None)
         return selftest_results[:2]
 
     def update(self):
